@@ -13,7 +13,7 @@ const DialogBox = ({ formData, handleInputChange, handleSubmit, setIsModalOpen }
               type="text"
               id="name"
               name="name"
-              value={formData.name}
+              value={formData.name || ""}
               onChange={handleInputChange}
               className="w-full p-2 mt-1 rounded bg-gray-700 text-white"
               required
@@ -26,7 +26,7 @@ const DialogBox = ({ formData, handleInputChange, handleSubmit, setIsModalOpen }
               type="number"
               id="age"
               name="age"
-              value={formData.age}
+              value={formData.age || ""}
               onChange={handleInputChange}
               className="w-full p-2 mt-1 rounded bg-gray-700 text-white"
               required
@@ -39,7 +39,7 @@ const DialogBox = ({ formData, handleInputChange, handleSubmit, setIsModalOpen }
               type="date"
               id="dob"
               name="dob"
-              value={formData.dob}
+              value={formData.dob || ""}
               onChange={handleInputChange}
               className="w-full p-2 mt-1 rounded bg-gray-700 text-white"
               required
@@ -51,7 +51,7 @@ const DialogBox = ({ formData, handleInputChange, handleSubmit, setIsModalOpen }
             <select
               id="gender"
               name="gender"
-              value={formData.gender}
+              value={formData.gender || ""}
               onChange={handleInputChange}
               className="w-full p-2 mt-1 rounded bg-gray-700 text-white"
               required
@@ -68,7 +68,7 @@ const DialogBox = ({ formData, handleInputChange, handleSubmit, setIsModalOpen }
             <select
               id="designation"
               name="designation"
-              value={formData.designation}
+              value={formData.designation || ""}
               onChange={handleInputChange}
               className="w-full p-2 mt-1 rounded bg-gray-700 text-white"
               required

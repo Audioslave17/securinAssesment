@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Button } from "@mui/material";
 import { Edit, Delete, Add } from "@mui/icons-material";
 import DialogBox from "./DialogBox";
@@ -6,6 +7,7 @@ import DialogBox from "./DialogBox";
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
+    id: null,
     name: "",
     age: "",
     dob: "",
@@ -14,6 +16,18 @@ const Home = () => {
   });
   const [entries, setEntries] = useState([]);
 
+  // Fetch existing data
+  const fetchEntries = () => {
+    axios.get("http://localhost:8000/api/list/")
+      .then(response => setEntries(response.data))
+      .catch(error => console.error("Error fetching data:", error));
+  };
+
+  useEffect(() => {
+    fetchEntries();
+  }, []);
+
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -22,23 +36,45 @@ const Home = () => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    setEntries([...entries, formData]);
-    setIsModalOpen(false);
-    setFormData({ name: "", age: "", dob: "", gender: "", designation: "" });
+
+    if (formData.id) {
+      // If formData has an ID, update the existing entry
+      axios.put(`http://localhost:8000/api/edit/${formData.id}/`, formData)
+        .then(response => {
+          fetchEntries();  // Refresh table
+          setIsModalOpen(false); // Close modal
+          setFormData({ id: null, name: "", age: "", dob: "", gender: "", designation: "" }); // Reset form
+        })
+        .catch(error => console.error("Error updating data:", error));
+    } else {
+      // Otherwise, create a new entry
+      axios.post("http://localhost:8000/api/add/", formData)
+        .then(response => {
+          fetchEntries(); // Refresh table
+          setIsModalOpen(false); // Close modal
+          setFormData({ id: null, name: "", age: "", dob: "", gender: "", designation: "" }); // Reset form
+        })
+        .catch(error => console.error("Error adding data:", error));
+    }
   };
 
-  const handleDelete = (index) => {
-    const updatedEntries = entries.filter((_, i) => i !== index);
-    setEntries(updatedEntries);
+  // Handle edit action
+  const handleEdit = (id) => {
+    const entryToEdit = entries.find(entry => entry.id === id);
+    if (entryToEdit) {
+      setFormData({ ...entryToEdit }); // Fill form with existing data
+      setIsModalOpen(true);
+    }
   };
 
-  const handleEdit = (index) => {
-    const entryToEdit = entries[index];
-    setFormData(entryToEdit);
-    handleDelete(index);
-    setIsModalOpen(true);
+  // Handle delete action
+  const handleDelete = (id) => {
+    axios.delete(`http://localhost:8000/api/delete/${id}/`)
+      .then(() => fetchEntries()) // Refresh table
+      .catch(error => console.error("Error deleting data:", error));
   };
 
   return (
@@ -47,16 +83,13 @@ const Home = () => {
         Securin Assessment
       </nav>
 
-      {/* Add Button */}
       <div className="flex justify-center mt-6">
         <Button variant="contained" color="primary" startIcon={<Add />} onClick={() => setIsModalOpen(true)}>
           Add
         </Button>
       </div>
 
-      {/* Background blur when modal is open */}
       <div className={`transition-all ${isModalOpen ? "pointer-events-none opacity-50" : "opacity-100"}`}>
-        {/* Responsive Table */}
         <div className="mt-10 px-4 sm:px-6 lg:px-8 overflow-x-auto">
           <table className="min-w-full bg-gray-800 rounded-lg shadow-md">
             <thead>
@@ -77,18 +110,18 @@ const Home = () => {
                   </td>
                 </tr>
               ) : (
-                entries.map((entry, index) => (
-                  <tr key={index} className="border-t border-gray-700 hover:bg-gray-600 transition">
+                entries.map((entry) => (
+                  <tr key={entry.id} className="border-t border-gray-700 hover:bg-gray-600 transition">
                     <td className="p-3">{entry.name}</td>
                     <td className="p-3">{entry.age}</td>
                     <td className="p-3">{entry.dob}</td>
                     <td className="p-3">{entry.gender}</td>
                     <td className="p-3">{entry.designation}</td>
                     <td className="p-3 flex justify-center gap-2">
-                      <Button variant="contained" color="warning" onClick={() => handleEdit(index)} size="small">
+                      <Button variant="contained" color="warning" onClick={() => handleEdit(entry.id)} size="small">
                         <Edit />
                       </Button>
-                      <Button variant="contained" color="error" onClick={() => handleDelete(index)} size="small">
+                      <Button variant="contained" color="error" onClick={() => handleDelete(entry.id)} size="small">
                         <Delete />
                       </Button>
                     </td>
@@ -100,7 +133,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Dialog Box */}
       {isModalOpen && (
         <DialogBox
           formData={formData}
