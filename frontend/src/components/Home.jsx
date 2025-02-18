@@ -16,7 +16,6 @@ const Home = () => {
   });
   const [entries, setEntries] = useState([]);
 
-  // Fetch existing data
   const fetchEntries = () => {
     axios.get("http://localhost:8000/api/list/")
       .then(response => setEntries(response.data))
@@ -27,7 +26,6 @@ const Home = () => {
     fetchEntries();
   }, []);
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -36,44 +34,41 @@ const Home = () => {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (formData.id) {
-      // If formData has an ID, update the existing entry
       axios.put(`http://localhost:8000/api/edit/${formData.id}/`, formData)
         .then(response => {
-          fetchEntries();  // Refresh table
-          setIsModalOpen(false); // Close modal
-          setFormData({ id: null, name: "", age: "", dob: "", gender: "", designation: "" }); // Reset form
+          fetchEntries();  
+          setIsModalOpen(false); 
+          setFormData({ id: null, name: "", age: "", dob: "", gender: "", designation: "" }); 
         })
         .catch(error => console.error("Error updating data:", error));
     } else {
-      // Otherwise, create a new entry
+     
       axios.post("http://localhost:8000/api/add/", formData)
         .then(response => {
-          fetchEntries(); // Refresh table
-          setIsModalOpen(false); // Close modal
-          setFormData({ id: null, name: "", age: "", dob: "", gender: "", designation: "" }); // Reset form
+          fetchEntries();
+          setIsModalOpen(false); 
+          setFormData({ id: null, name: "", age: "", dob: "", gender: "", designation: "" }); 
         })
         .catch(error => console.error("Error adding data:", error));
     }
   };
 
-  // Handle edit action
   const handleEdit = (id) => {
     const entryToEdit = entries.find(entry => entry.id === id);
     if (entryToEdit) {
-      setFormData({ ...entryToEdit }); // Fill form with existing data
+      setFormData({ ...entryToEdit }); 
       setIsModalOpen(true);
     }
   };
 
-  // Handle delete action
+  
   const handleDelete = (id) => {
     axios.delete(`http://localhost:8000/api/delete/${id}/`)
-      .then(() => fetchEntries()) // Refresh table
+      .then(() => fetchEntries()) 
       .catch(error => console.error("Error deleting data:", error));
   };
 
