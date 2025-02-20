@@ -116,7 +116,7 @@ const Home = () => {
                       <Button variant="contained" color="warning" onClick={() => handleEdit(entry.id)} size="small">
                         <Edit />
                       </Button>
-                      <Button variant="contained" color="error" onClick={() => handleDelete(entry.id)} size="small">
+                      <Button variant="contained" color="error" onClick={() => { if (window.confirm("Are you sure you want to delete this?")) {handleDelete(entry.id);} }} size="small">
                         <Delete />
                       </Button>
                     </td>
