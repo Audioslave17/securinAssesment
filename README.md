@@ -1,5 +1,5 @@
 # Securin Assessment (Anurag Kumar)
-[Overview of the Completed Task]((https://drive.google.com/file/d/1sPFwdLs5q-dAeuOHEYDOzhF7IO_1mu2x/view?usp=sharing))
+[Overview of the Completed Task](https://drive.google.com/file/d/1sPFwdLs5q-dAeuOHEYDOzhF7IO_1mu2x/view?usp=sharing)
 
 ## Problem Statement
 
