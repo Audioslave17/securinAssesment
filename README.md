@@ -1,43 +1,102 @@
 # Securin Assessment (Anurag Kumar)
 [Overview of the Completed Task](https://drive.google.com/file/d/1celKxI5eyWJw5oq4UQ2VR5VADd3UscRJ/view?usp=sharing)
 
-## Description
+## Problem Statement
 
-This is a simple Employee Management web application built using React.js for the frontend and Django for the backend. It allows users to add, edit, delete, and view employees in a structured data table.
+Keeping an updated directory is crucial for workforce management, but manual record-keeping is time-consuming and error-prone. Organizations need a user-friendly system to efficiently add, update, and remove details while ensuring data persistence.
+
+To address this need, we aim to develop a Full-Stack Employee Directory Management System using React.js for the frontend and Django/FastAPI for the backend, with a database to store employee information.
+
+The system will provide the following functionalities:
+
+-- A data table to display all available employees. If no employees exist, a "No Result Found" message will be shown along with an Add Employee button.
+
+-- A dialog form to add new employees, capturing essential details like Name, Age, Date of Birth, Gender, and Department. Submitting this form will trigger a CREATE API request to store the data in the database.
+
+-- Displaying the list of employees in the data table, with each row containing Edit and Delete actions.
+
+-- Clicking the Edit icon will open a pre-filled dialog where users can modify employee details and submit an UPDATE API request to update the record in the database.
+
+-- Clicking the Delete icon will prompt a confirmation dialog, and upon confirmation, a DELETE API request will remove the employee record from the database.
+
+-- This system will simplify employee data management, reduce manual efforts, and ensure efficient record-keeping with a user-friendly interface.
 
 
-## Features
 
--> Display employees in a table format
+## Approach
 
--> Show "No Result Found" with an Add Employee button if no employee exists
+To address this problem, I developed a Full-Stack Employee Directory Management System using React.js, Tailwind CSS, and Material UI for the frontend and Django for the backend.
 
--> Add new employees via a form in a modal dialog
+# Frontend Implementation
 
--> Edit employee details using a pre-populated form in a modal dialog
+-- Built the interface using React.js with functional components and hooks.
 
--> Delete employees with a confirmation prompt
+-- Designed a Home component to display the employee list and an Add Employee button.
 
--> API integration using Axios for CRUD operations
+-- Implemented a Dialog Box component that appears on clicking the Add button, containing input fields for Name, Age, Date of Birth, Gender, and Department with appropriate data types.
+
+-- Used Axios to interact with backend APIs for creating, updating, and deleting records.
+
+# Backend Implementation
+
+-- Developed the backend using Django, with a Model named Employee, containing fields for Name, Age, Date of Birth, Gender, and Department.
+
+-- Created views with the following API endpoints:
+
+-- POST API for adding a new record.
+
+-- PUT API for updating existing records.
+
+-- DELETE API for removing records.
+
+-- GET API for retrieving the list of employees.
+
+-- Used Django REST Framework serializers to handle data conversion and migrations to create the database schema.
+
+-- Exposed API endpoints through Django URLs, which were integrated with the frontend via Axios for seamless communication.
+
+This approach ensures an efficient and user-friendly system for managing workforce records while maintaining data persistence.
+
+# Approach 2
+
+There could be another approach to this problem:
+A serverless approach which eliminates the need for backend management and scales automatically.
+
+Frontend:
+
+-- React.js with Firebase SDK for authentication and Firestore integration.
+
+-- Uses Firebase Firestore as the NoSQL database for storing employee records.
+
+Backend:
+
+-- Instead of Django, use Firebase Cloud Functions to handle create, update, and delete operations.
+
+-- Firestore triggers can be used for real-time updates.
 
 
-## Tech Stack
 
-### FrontEnd
+## Challenge
 
--- React.js
+The issue was ensuring that clicking the Edit button opened the correct employee data by fetching it using the ID and updating it via the PUT API.
 
--- Axios (for API calls)
+Solution:
 
--- Material UI 
+Store the Employee ID on Edit Click:
+When the Edit button is clicked, store the corresponding employee ID in state.
 
--- Tailwind CSS
+Fetch Employee Data by ID:
+Make an API call (GET /employee/{id}) to retrieve the specific employee's details.
 
-### Backend
+Populate the Edit Form:
+Use the API response to pre-fill the form fields.
 
--- Django
+Update Data Using the PUT API:
+On form submission, send a PUT request (PUT /employee/{id}) to update the record.
 
--- SQLite
+
+
+### Input and Output
 
 
 
@@ -83,10 +142,10 @@ After editing and clicking on submit, it will take you to the table with updated
 
 ## On clicking Delete ("DELETE API")
 ![Screenshot 2025-02-19 012105](https://github.com/user-attachments/assets/c786a425-29f9-4f13-b591-c8127c9c6ffc)
-
+![Screenshot 2025-02-20 230236](https://github.com/user-attachments/assets/6b4a779a-159d-42b6-bf91-5d1264be37cb)
 ![Screenshot 2025-02-19 012504](https://github.com/user-attachments/assets/e8be419f-5911-4ba8-a841-14cfef9fee20)
 
-On clicking Delete the Information of That employee will get deleted from the databse and the table
+On clicking Delete, a alert box will appear and on conferming that alert box the data will be removed from the database.
 
 
 
